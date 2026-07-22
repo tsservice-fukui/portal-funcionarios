@@ -61,8 +61,286 @@ function applyLanguage(language) {
   saveLanguage(selectedLanguage);
 }
 
+const installModal = document.getElementById("install-modal");
+
+if (installModal && !installModal.hidden) {
+  renderInstallInstructions();
+}
+
 function capitalize(value) {
   return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+let deferredInstallPrompt = null;
+
+function isRunningAsInstalledApp() {
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true
+  );
+}
+
+function getInstallEnvironment() {
+  const userAgent = navigator.userAgent;
+
+  return {
+    isIOS: /iPhone|iPad|iPod/i.test(userAgent),
+    isIOSChrome: /CriOS/i.test(userAgent),
+    isInAppBrowser:
+      /Line|WhatsApp|Instagram|FBAN|FBAV|Messenger/i.test(userAgent)
+  };
+}
+
+function getActiveLanguage() {
+  return document.documentElement.lang === "ja" ? "ja" : "pt";
+}
+
+function renderInstallInstructions() {
+  const instructions = document.getElementById("install-instructions");
+  const copyButton = document.getElementById("copy-portal-link");
+  const environment = getInstallEnvironment();
+  const language = getActiveLanguage();
+
+  if (!instructions || !copyButton) {
+    return;
+  }
+
+  copyButton.hidden = true;
+
+  if (environment.isInAppBrowser) {
+    copyButton.hidden = false;
+
+    instructions.innerHTML =
+      language === "ja"
+        ? `
+          <p>
+            LINEやWhatsAppなどのアプリ内ブラウザでは、
+            インストールできない場合があります。
+          </p>
+          <ol>
+            <li>画面のメニューを開きます。</li>
+            <li>
+              <strong>Safariで開く</strong>または
+              <strong>Chromeで開く</strong>を選択します。
+            </li>
+            <li>
+              選択肢が表示されない場合は、下のボタンでURLをコピーし、
+              SafariまたはChromeで開いてください。
+            </li>
+          </ol>
+        `
+        : `
+          <p>
+            Navegadores internos do LINE, WhatsApp ou outros aplicativos
+            podem não permitir a instalação.
+          </p>
+          <ol>
+            <li>Abra o menu do aplicativo.</li>
+            <li>
+              Escolha <strong>Abrir no Safari</strong> ou
+              <strong>Abrir no Chrome</strong>.
+            </li>
+            <li>
+              Se essa opção não aparecer, copie o endereço abaixo e abra-o
+              manualmente no Safari ou Chrome.
+            </li>
+          </ol>
+        `;
+
+    return;
+  }
+
+  if (environment.isIOSChrome) {
+    copyButton.hidden = false;
+
+    instructions.innerHTML =
+      language === "ja"
+        ? `
+          <ol>
+            <li>Chromeのアドレスバー右側にある<strong>共有</strong>をタップします。</li>
+            <li><strong>ホーム画面に追加</strong>を選択します。</li>
+            <li>内容を確認し、<strong>追加</strong>をタップします。</li>
+          </ol>
+          <p>
+            「ホーム画面に追加」が表示されない場合は、URLをコピーして
+            Safariで開いてください。
+          </p>
+        `
+        : `
+          <ol>
+            <li>
+              No Chrome, toque em <strong>Compartilhar</strong>, à direita
+              da barra de endereço.
+            </li>
+            <li>Escolha <strong>Adicionar à Tela de Início</strong>.</li>
+            <li>Confira os dados e toque em <strong>Adicionar</strong>.</li>
+          </ol>
+          <p>
+            Se a opção não aparecer, copie o endereço e abra o portal no Safari.
+          </p>
+        `;
+
+    return;
+  }
+
+  if (environment.isIOS) {
+    instructions.innerHTML =
+      language === "ja"
+        ? `
+          <ol>
+            <li>Safariの<strong>共有</strong>ボタンをタップします。</li>
+            <li><strong>ホーム画面に追加</strong>を選択します。</li>
+            <li><strong>Webアプリとして開く</strong>をオンにします。</li>
+            <li><strong>追加</strong>をタップします。</li>
+          </ol>
+        `
+        : `
+          <ol>
+            <li>No Safari, toque no botão <strong>Compartilhar</strong>.</li>
+            <li>Escolha <strong>Adicionar à Tela de Início</strong>.</li>
+            <li>Ative <strong>Abrir como App da Web</strong>.</li>
+            <li>Toque em <strong>Adicionar</strong>.</li>
+          </ol>
+        `;
+
+    return;
+  }
+
+  instructions.innerHTML =
+    language === "ja"
+      ? `
+        <p>
+          ブラウザのメニューを開き、
+          <strong>アプリをインストール</strong>または
+          <strong>ホーム画面に追加</strong>を選択してください。
+        </p>
+      `
+      : `
+        <p>
+          Abra o menu do navegador e escolha
+          <strong>Instalar aplicativo</strong> ou
+          <strong>Adicionar à tela inicial</strong>.
+        </p>
+      `;
+}
+
+function openInstallDialog() {
+  const modal = document.getElementById("install-modal");
+
+  if (!modal) {
+    return;
+  }
+
+  renderInstallInstructions();
+  modal.hidden = false;
+  document.body.classList.add("modal-open");
+
+  modal.querySelector(".install-close")?.focus();
+}
+
+function closeInstallDialog() {
+  const modal = document.getElementById("install-modal");
+
+  if (!modal) {
+    return;
+  }
+
+  modal.hidden = true;
+  document.body.classList.remove("modal-open");
+  document.getElementById("install-button")?.focus();
+}
+
+function showInstallButton() {
+  const button = document.getElementById("install-button");
+
+  if (button && !isRunningAsInstalledApp()) {
+    button.hidden = false;
+  }
+}
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  showInstallButton();
+});
+
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+
+  const button = document.getElementById("install-button");
+
+  if (button) {
+    button.hidden = true;
+  }
+});
+
+function setupInstallExperience() {
+  const installButton = document.getElementById("install-button");
+  const environment = getInstallEnvironment();
+
+  if (!installButton || isRunningAsInstalledApp()) {
+    return;
+  }
+
+  if (environment.isIOS || environment.isInAppBrowser) {
+    showInstallButton();
+  }
+
+  installButton.addEventListener("click", async () => {
+    if (deferredInstallPrompt) {
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+
+      deferredInstallPrompt = null;
+      installButton.hidden = true;
+      return;
+    }
+
+    openInstallDialog();
+  });
+
+  document.querySelectorAll("[data-close-install]").forEach((element) => {
+    element.addEventListener("click", closeInstallDialog);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeInstallDialog();
+    }
+  });
+
+  document
+    .getElementById("copy-portal-link")
+    ?.addEventListener("click", async () => {
+      const portalUrl =
+        "https://tsservice-fukui.github.io/portal-funcionarios/";
+
+      try {
+        await navigator.clipboard.writeText(portalUrl);
+
+        const instructions =
+          document.getElementById("install-instructions");
+
+        if (instructions) {
+          const message =
+            getActiveLanguage() === "ja"
+              ? "ポータルのURLをコピーしました。"
+              : "Endereço do portal copiado.";
+
+          instructions.insertAdjacentHTML(
+            "beforeend",
+            `<p class="copy-success">${message}</p>`
+          );
+        }
+      } catch {
+        window.prompt(
+          getActiveLanguage() === "ja"
+            ? "このURLをコピーしてください："
+            : "Copie este endereço:",
+          portalUrl
+        );
+      }
+    });
 }
 
 function setupConnectionStatus() {
@@ -89,7 +367,8 @@ function setupConnectionStatus() {
 
 document.addEventListener("DOMContentLoaded", () => {
     setupConnectionStatus();
-    
+    setupInstallExperience();
+
   const initialLanguage = detectLanguage();
 
   applyLanguage(initialLanguage);

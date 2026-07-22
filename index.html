@@ -238,9 +238,79 @@
 
     <span class="service-arrow" aria-hidden="true">›</span>
   </a>
+  <button
+  type="button"
+  class="support-card install-card"
+  id="install-button"
+  hidden
+>
+  <span class="support-icon" aria-hidden="true">📲</span>
+
+  <span>
+    <strong
+      data-pt="Instalar o Portal TSS"
+      data-ja="Portal TSSをインストール"
+    >
+      Instalar o Portal TSS
+    </strong>
+
+    <small
+      data-pt="Adicionar à tela inicial deste aparelho"
+      data-ja="この端末のホーム画面に追加"
+    >
+      Adicionar à tela inicial deste aparelho
+    </small>
+  </span>
+
+  <span class="service-arrow" aria-hidden="true">›</span>
+</button>
 </section>
   </main>
+<div class="install-modal" id="install-modal" hidden>
+  <div class="install-backdrop" data-close-install></div>
 
+  <section
+    class="install-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="install-dialog-title"
+  >
+    <button
+      type="button"
+      class="install-close"
+      data-close-install
+      aria-label="Fechar"
+    >
+      ×
+    </button>
+
+    <span class="install-dialog-icon" aria-hidden="true">📲</span>
+
+    <h2
+      id="install-dialog-title"
+      data-pt="Instalar o Portal TSS"
+      data-ja="Portal TSSをインストール"
+    >
+      Instalar o Portal TSS
+    </h2>
+
+    <div class="install-instructions" id="install-instructions"></div>
+
+    <button
+      type="button"
+      class="secondary-action copy-link-button"
+      id="copy-portal-link"
+      hidden
+    >
+      <span
+        data-pt="Copiar endereço do portal"
+        data-ja="ポータルのURLをコピー"
+      >
+        Copiar endereço do portal
+      </span>
+    </button>
+  </section>
+</div>
   <footer class="site-footer">
   <p>All rights reserved ©2026 TSサービス Co., Ltd.</p>
 </footer>
