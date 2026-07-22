@@ -200,7 +200,7 @@ function renderInstallInstructions() {
         <ol>
           <li><strong>•••</strong>ボタンをタップします。</li>
           <li>表示されたメニューから<strong>共有</strong>を選択します。</li>
-          <li><strong>ホーム画面に追加</strong>を選択します。</li>
+          <li>共有メニューの一覧を上にスワイプし、<strong>ホーム画面に追加</strong>が表示されたらタップします。</li>
           <li><strong>Webアプリとして開く</strong>をオンにします。</li>
           <li><strong>追加</strong>をタップします。</li>
         </ol>
@@ -222,7 +222,8 @@ function renderInstallInstructions() {
         <ol>
           <li>Toque no botão <strong>•••</strong>.</li>
           <li>No menu exibido, toque em <strong>Compartilhar</strong>.</li>
-          <li>Escolha <strong>Adicionar à Tela de Início</strong>.</li>
+          <li>  Na lista de opções, deslize a tela para cima até encontrar  <strong>Adicionar à Tela de Início</strong> e toque nessa opção.
+</li>
           <li>Ative <strong>Abrir como App da Web</strong>.</li>
           <li>Toque em <strong>Adicionar</strong>.</li>
         </ol>
