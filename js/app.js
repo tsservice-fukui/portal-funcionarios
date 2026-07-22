@@ -184,26 +184,71 @@ function renderInstallInstructions() {
   }
 
   if (environment.isIOS) {
-    instructions.innerHTML =
-      language === "ja"
-        ? `
-          <ol>
-            <li>Safariの<strong>共有</strong>ボタンをタップします。</li>
-            <li><strong>ホーム画面に追加</strong>を選択します。</li>
-            <li><strong>Webアプリとして開く</strong>をオンにします。</li>
-            <li><strong>追加</strong>をタップします。</li>
-          </ol>
-        `
-        : `
-          <ol>
-            <li>No Safari, toque no botão <strong>Compartilhar</strong>.</li>
-            <li>Escolha <strong>Adicionar à Tela de Início</strong>.</li>
-            <li>Ative <strong>Abrir como App da Web</strong>.</li>
-            <li>Toque em <strong>Adicionar</strong>.</li>
-          </ol>
-        `;
+  instructions.innerHTML =
+    language === "ja"
+      ? `
+        <p>Safariで次の共有アイコンを探してください。</p>
 
-    return;
+        <div class="share-icon-guide">
+          <span class="share-icon-example" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 15V3m0 0L8 7m4-4 4 4M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"
+              />
+            </svg>
+          </span>
+
+          <span>
+            四角から上向きの矢印が出ているアイコンです。
+            通常はSafariの画面下部またはアドレスバー付近にあります。
+          </span>
+        </div>
+
+        <ol>
+          <li><strong>共有</strong>アイコンをタップします。</li>
+          <li><strong>ホーム画面に追加</strong>を選択します。</li>
+          <li><strong>Webアプリとして開く</strong>をオンにします。</li>
+          <li><strong>追加</strong>をタップします。</li>
+        </ol>
+
+        <p>
+          アイコンが表示されない場合は、Safariのメニューを開き、
+          <strong>共有</strong>を選択してください。
+        </p>
+      `
+      : `
+        <p>Procure no Safari o seguinte ícone:</p>
+
+        <div class="share-icon-guide">
+          <span class="share-icon-example" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 15V3m0 0L8 7m4-4 4 4M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"
+              />
+            </svg>
+          </span>
+
+          <span>
+            É o desenho de um quadrado com uma seta apontando para cima.
+            Normalmente fica na parte inferior do Safari ou próximo à barra
+            de endereço.
+          </span>
+        </div>
+
+        <ol>
+          <li>Toque no ícone <strong>Compartilhar</strong>.</li>
+          <li>Escolha <strong>Adicionar à Tela de Início</strong>.</li>
+          <li>Ative <strong>Abrir como App da Web</strong>.</li>
+          <li>Toque em <strong>Adicionar</strong>.</li>
+        </ol>
+
+        <p>
+          Se o ícone não estiver visível, abra o menu do Safari e escolha
+          <strong>Compartilhar</strong>.
+        </p>
+      `;
+
+  return;
   }
 
   instructions.innerHTML =
