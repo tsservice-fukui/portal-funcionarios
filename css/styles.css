@@ -604,3 +604,26 @@ a {
   outline: 3px solid rgba(32, 42, 115, 0.3);
   outline-offset: 3px;
 }
+
+[hidden] {
+  display: none !important;
+}
+
+.connection-banner {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  z-index: 1000;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 13px 18px;
+  color: #5d4300;
+  background: #fff4c7;
+  border: 1px solid #e4c765;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(45, 36, 5, 0.18);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+}

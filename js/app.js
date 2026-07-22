@@ -65,7 +65,31 @@ function capitalize(value) {
   return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
+function setupConnectionStatus() {
+  const banner = document.createElement("div");
+
+  banner.className = "connection-banner";
+  banner.setAttribute("role", "status");
+  banner.setAttribute("aria-live", "polite");
+  banner.dataset.pt =
+    "Você está sem conexão. Conecte-se à internet para acessar os formulários.";
+  banner.dataset.ja =
+    "現在オフラインです。フォームを開くにはインターネットに接続してください。";
+  banner.hidden = navigator.onLine;
+
+  document.body.appendChild(banner);
+
+  function updateConnectionStatus() {
+    banner.hidden = navigator.onLine;
+  }
+
+  window.addEventListener("online", updateConnectionStatus);
+  window.addEventListener("offline", updateConnectionStatus);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+    setupConnectionStatus();
+    
   const initialLanguage = detectLanguage();
 
   applyLanguage(initialLanguage);
