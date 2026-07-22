@@ -277,7 +277,7 @@ function closeInstallDialog() {
 }
 
 const INSTALL_TOAST_KEY = "portal-tss-install-toast-last-shown";
-const INSTALL_TOAST_INTERVAL = 14 * 24 * 60 * 60 * 1000;
+const INSTALL_TOAST_INTERVAL = 2 * 24 * 60 * 60 * 1000;
 const INSTALL_TOAST_DELAY = 3000;
 const INSTALL_TOAST_DURATION = 8000;
 
