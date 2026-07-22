@@ -250,11 +250,98 @@ function closeInstallDialog() {
   document.getElementById("install-button")?.focus();
 }
 
+const INSTALL_TOAST_KEY = "portal-tss-install-toast-last-shown";
+const INSTALL_TOAST_INTERVAL = 14 * 24 * 60 * 60 * 1000;
+const INSTALL_TOAST_DELAY = 3000;
+const INSTALL_TOAST_DURATION = 8000;
+
+let installToastDelayTimer = null;
+let installToastHideTimer = null;
+
+function getLastInstallToastDate() {
+  try {
+    return Number(localStorage.getItem(INSTALL_TOAST_KEY)) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+function saveInstallToastDate() {
+  try {
+    localStorage.setItem(INSTALL_TOAST_KEY, String(Date.now()));
+  } catch {
+    // O aviso continua funcionando mesmo sem armazenamento local.
+  }
+}
+
+function hideInstallToast() {
+  const toast = document.getElementById("install-toast");
+
+  if (toast) {
+    toast.hidden = true;
+    delete toast.dataset.scheduled;
+  }
+
+  clearTimeout(installToastDelayTimer);
+  clearTimeout(installToastHideTimer);
+
+  installToastDelayTimer = null;
+  installToastHideTimer = null;
+}
+
+function shouldShowInstallToast() {
+  const timeSinceLastDisplay =
+    Date.now() - getLastInstallToastDate();
+
+  return (
+    !isRunningAsInstalledApp() &&
+    navigator.onLine &&
+    timeSinceLastDisplay >= INSTALL_TOAST_INTERVAL
+  );
+}
+
+function scheduleInstallToast() {
+  const toast = document.getElementById("install-toast");
+  const installButton = document.getElementById("install-button");
+
+  if (
+    !toast ||
+    !installButton ||
+    installButton.hidden ||
+    toast.dataset.scheduled === "true" ||
+    !shouldShowInstallToast()
+  ) {
+    return;
+  }
+
+  toast.dataset.scheduled = "true";
+
+  installToastDelayTimer = setTimeout(() => {
+    delete toast.dataset.scheduled;
+
+    if (
+      !shouldShowInstallToast() ||
+      installButton.hidden ||
+      !navigator.onLine
+    ) {
+      return;
+    }
+
+    toast.hidden = false;
+    saveInstallToastDate();
+
+    installToastHideTimer = setTimeout(() => {
+      hideInstallToast();
+    }, INSTALL_TOAST_DURATION);
+  }, INSTALL_TOAST_DELAY);
+}
+
 function showInstallButton() {
   const button = document.getElementById("install-button");
 
   if (button && !isRunningAsInstalledApp()) {
     button.hidden = false;
+    scheduleInstallToast();
   }
 }
 
@@ -272,6 +359,8 @@ window.addEventListener("appinstalled", () => {
   if (button) {
     button.hidden = true;
   }
+
+  hideInstallToast();
 });
 
 function setupInstallExperience() {
@@ -293,11 +382,29 @@ function setupInstallExperience() {
 
       deferredInstallPrompt = null;
       installButton.hidden = true;
+      hideInstallToast();
+
       return;
     }
 
     openInstallDialog();
   });
+
+  document
+    .getElementById("install-toast-action")
+    ?.addEventListener("click", () => {
+      hideInstallToast();
+      installButton.click();
+    });
+
+  document
+    .getElementById("install-toast-close")
+    ?.addEventListener("click", () => {
+      hideInstallToast();
+    });
+
+  window.addEventListener("online", scheduleInstallToast);
+  window.addEventListener("offline", hideInstallToast);
 
   document.querySelectorAll("[data-close-install]").forEach((element) => {
     element.addEventListener("click", closeInstallDialog);
@@ -342,7 +449,6 @@ function setupInstallExperience() {
       }
     });
 }
-
 function setupConnectionStatus() {
   const banner = document.createElement("div");
 
