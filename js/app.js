@@ -187,69 +187,49 @@ function renderInstallInstructions() {
   instructions.innerHTML =
     language === "ja"
       ? `
-        <p>Safariで次の共有アイコンを探してください。</p>
+        <p>Safariのアドレスバーの横にある次のボタンを探してください。</p>
 
-        <div class="share-icon-guide">
-          <span class="share-icon-example" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M12 15V3m0 0L8 7m4-4 4 4M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"
-              />
-            </svg>
-          </span>
+        <div class="safari-menu-guide">
+          <span class="safari-menu-example" aria-hidden="true">•••</span>
 
           <span>
-            四角から上向きの矢印が出ているアイコンです。
-            通常はSafariの画面下部またはアドレスバー付近にあります。
+            通常、Safari画面下部のアドレスバーの横にあります。
           </span>
         </div>
 
         <ol>
-          <li><strong>共有</strong>アイコンをタップします。</li>
+          <li><strong>•••</strong>ボタンをタップします。</li>
+          <li>表示されたメニューから<strong>共有</strong>を選択します。</li>
           <li><strong>ホーム画面に追加</strong>を選択します。</li>
           <li><strong>Webアプリとして開く</strong>をオンにします。</li>
           <li><strong>追加</strong>をタップします。</li>
         </ol>
-
-        <p>
-          アイコンが表示されない場合は、Safariのメニューを開き、
-          <strong>共有</strong>を選択してください。
-        </p>
       `
       : `
-        <p>Procure no Safari o seguinte ícone:</p>
+        <p>
+          Procure o seguinte botão ao lado da barra de endereço do Safari:
+        </p>
 
-        <div class="share-icon-guide">
-          <span class="share-icon-example" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M12 15V3m0 0L8 7m4-4 4 4M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"
-              />
-            </svg>
-          </span>
+        <div class="safari-menu-guide">
+          <span class="safari-menu-example" aria-hidden="true">•••</span>
 
           <span>
-            É o desenho de um quadrado com uma seta apontando para cima.
-            Normalmente fica na parte inferior do Safari ou próximo à barra
-            de endereço.
+            Normalmente ele fica ao lado da barra de endereço, na parte
+            inferior da tela do Safari.
           </span>
         </div>
 
         <ol>
-          <li>Toque no ícone <strong>Compartilhar</strong>.</li>
+          <li>Toque no botão <strong>•••</strong>.</li>
+          <li>No menu exibido, toque em <strong>Compartilhar</strong>.</li>
           <li>Escolha <strong>Adicionar à Tela de Início</strong>.</li>
           <li>Ative <strong>Abrir como App da Web</strong>.</li>
           <li>Toque em <strong>Adicionar</strong>.</li>
         </ol>
-
-        <p>
-          Se o ícone não estiver visível, abra o menu do Safari e escolha
-          <strong>Compartilhar</strong>.
-        </p>
       `;
 
   return;
-  }
+}
 
   instructions.innerHTML =
     language === "ja"

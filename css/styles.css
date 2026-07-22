@@ -1087,11 +1087,11 @@ body.modal-open {
   }
 }
 
-.share-icon-guide {
+.safari-menu-guide {
   margin: 0 0 20px;
   padding: 14px;
   display: grid;
-  grid-template-columns: 48px 1fr;
+  grid-template-columns: 52px 1fr;
   align-items: center;
   gap: 12px;
   color: var(--color-text);
@@ -1102,23 +1102,16 @@ body.modal-open {
   line-height: 1.45;
 }
 
-.share-icon-example {
-  width: 48px;
-  height: 48px;
+.safari-menu-example {
+  width: 52px;
+  height: 42px;
   display: grid;
   place-items: center;
   color: #0878ff;
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 3px 12px rgba(20, 40, 90, 0.12);
-}
-
-.share-icon-example svg {
-  width: 28px;
-  height: 28px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 2px;
 }
