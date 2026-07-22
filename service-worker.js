@@ -1,4 +1,4 @@
-const CACHE_NAME = "portal-tss-v3";
+const CACHE_NAME = "portal-tss-v4";
 
 const APP_FILES = [
   "./",
