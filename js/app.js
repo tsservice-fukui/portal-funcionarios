@@ -497,9 +497,56 @@ function setupConnectionStatus() {
   window.addEventListener("offline", updateConnectionStatus);
 }
 
+function setupBackToTop() {
+  if (!document.querySelector(".article")) {
+    return;
+  }
+
+  const button = document.createElement("button");
+
+  button.type = "button";
+  button.className = "back-to-top";
+  button.hidden = true;
+  button.setAttribute("aria-label", "Voltar ao topo");
+
+  button.innerHTML = `
+    <span aria-hidden="true">↑</span>
+
+    <span
+      data-pt="Topo"
+      data-ja="ページ上部へ"
+    >
+      Topo
+    </span>
+  `;
+
+  function updateButtonVisibility() {
+    button.hidden = window.scrollY < 500;
+  }
+
+  button.addEventListener("click", () => {
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    window.scrollTo({
+      top: 0,
+      behavior: reducedMotion ? "auto" : "smooth"
+    });
+  });
+
+  window.addEventListener("scroll", updateButtonVisibility, {
+    passive: true
+  });
+
+  document.body.appendChild(button);
+  updateButtonVisibility();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     setupConnectionStatus();
     setupInstallExperience();
+    setupBackToTop();
 
   const initialLanguage = detectLanguage();
 
