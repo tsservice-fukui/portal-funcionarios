@@ -511,3 +511,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) {
+    return;
+  }
+
+  const appScript = Array.from(document.scripts).find((script) =>
+    script.src.endsWith("/js/app.js")
+  );
+
+  if (!appScript) {
+    return;
+  }
+
+  const serviceWorkerUrl = new URL(
+    "../service-worker.js",
+    appScript.src
+  );
+
+  navigator.serviceWorker
+    .register(serviceWorkerUrl.href)
+    .catch((error) => {
+      console.error("Falha ao registrar o service worker:", error);
+    });
+}
+
+window.addEventListener("load", registerServiceWorker);

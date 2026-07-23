@@ -1,4 +1,4 @@
-const CACHE_NAME = "portal-tss-v7";
+const CACHE_NAME = "portal-tss-v8";
 
 const APP_FILES = [
   "./",
@@ -11,6 +11,7 @@ const APP_FILES = [
   "./pages/endereco.html",
   "./pages/contatos.html",
   "./assets/images/logo.png",
+  "./assets/images/logo-horizontal.png",
   "./assets/images/documento-veicular.jpeg",
   "./assets/icons/apple-touch-icon.png",
   "./assets/icons/icon-192.png",
