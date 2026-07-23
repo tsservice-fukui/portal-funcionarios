@@ -30,11 +30,7 @@ body {
   color: var(--color-text);
   background: var(--color-background);
   font-family:
-    Inter,
-    "Noto Sans JP",
-    "Yu Gothic",
-    "Hiragino Kaku Gothic ProN",
-    "Segoe UI",
+    Inter, "Noto Sans JP", "Yu Gothic", "Hiragino Kaku Gothic ProN", "Segoe UI",
     sans-serif;
   line-height: 1.5;
 }

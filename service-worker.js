@@ -15,7 +15,7 @@ const APP_FILES = [
   "./assets/images/documento-veicular.jpeg",
   "./assets/icons/apple-touch-icon.png",
   "./assets/icons/icon-192.png",
-  "./assets/icons/icon-512.png"
+  "./assets/icons/icon-512.png",
 ];
 
 self.addEventListener("install", (event) => {
@@ -23,7 +23,7 @@ self.addEventListener("install", (event) => {
     caches
       .open(CACHE_NAME)
       .then((cache) => cache.addAll(APP_FILES))
-      .then(() => self.skipWaiting())
+      .then(() => self.skipWaiting()),
   );
 });
 
@@ -35,10 +35,10 @@ self.addEventListener("activate", (event) => {
         Promise.all(
           cacheNames
             .filter((cacheName) => cacheName !== CACHE_NAME)
-            .map((cacheName) => caches.delete(cacheName))
-        )
+            .map((cacheName) => caches.delete(cacheName)),
+        ),
       )
-      .then(() => self.clients.claim())
+      .then(() => self.clients.claim()),
   );
 });
 
@@ -46,10 +46,7 @@ self.addEventListener("fetch", (event) => {
   const request = event.request;
   const requestUrl = new URL(request.url);
 
-  if (
-    request.method !== "GET" ||
-    requestUrl.origin !== self.location.origin
-  ) {
+  if (request.method !== "GET" || requestUrl.origin !== self.location.origin) {
     return;
   }
 
@@ -78,6 +75,6 @@ self.addEventListener("fetch", (event) => {
         }
 
         return Response.error();
-      })
+      }),
   );
 });

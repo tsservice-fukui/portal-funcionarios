@@ -34,16 +34,15 @@ function applyLanguage(language) {
     ? language
     : "pt";
 
-  document.documentElement.lang =
-    selectedLanguage === "ja" ? "ja" : "pt-BR";
+  document.documentElement.lang = selectedLanguage === "ja" ? "ja" : "pt-BR";
 
   document.querySelectorAll("[data-pt][data-ja]").forEach((element) => {
     element.textContent = element.dataset[selectedLanguage];
   });
 
   document.querySelectorAll("[data-lang-section]").forEach((section) => {
-  section.hidden = section.dataset.langSection !== selectedLanguage;
-});
+    section.hidden = section.dataset.langSection !== selectedLanguage;
+  });
 
   document.querySelectorAll("[data-language]").forEach((button) => {
     const isActive = button.dataset.language === selectedLanguage;
@@ -52,7 +51,8 @@ function applyLanguage(language) {
     button.setAttribute("aria-pressed", String(isActive));
   });
 
-  const pageTitle = document.body.dataset[`title${capitalize(selectedLanguage)}`];
+  const pageTitle =
+    document.body.dataset[`title${capitalize(selectedLanguage)}`];
 
   if (pageTitle) {
     document.title = pageTitle;
@@ -86,8 +86,9 @@ function getInstallEnvironment() {
   return {
     isIOS: /iPhone|iPad|iPod/i.test(userAgent),
     isIOSChrome: /CriOS/i.test(userAgent),
-    isInAppBrowser:
-      /Line|WhatsApp|Instagram|FBAN|FBAV|Messenger/i.test(userAgent)
+    isInAppBrowser: /Line|WhatsApp|Instagram|FBAN|FBAV|Messenger/i.test(
+      userAgent,
+    ),
   };
 }
 
@@ -184,9 +185,9 @@ function renderInstallInstructions() {
   }
 
   if (environment.isIOS) {
-  instructions.innerHTML =
-    language === "ja"
-      ? `
+    instructions.innerHTML =
+      language === "ja"
+        ? `
         <p>Safariのアドレスバーの横にある次のボタンを探してください。</p>
 
         <div class="safari-menu-guide">
@@ -205,7 +206,7 @@ function renderInstallInstructions() {
           <li><strong>追加</strong>をタップします。</li>
         </ol>
       `
-      : `
+        : `
         <p>
           Procure o seguinte botão ao lado da barra de endereço do Safari:
         </p>
@@ -229,8 +230,8 @@ function renderInstallInstructions() {
         </ol>
       `;
 
-  return;
-}
+    return;
+  }
 
   instructions.innerHTML =
     language === "ja"
@@ -316,8 +317,7 @@ function hideInstallToast() {
 }
 
 function shouldShowInstallToast() {
-  const timeSinceLastDisplay =
-    Date.now() - getLastInstallToastDate();
+  const timeSinceLastDisplay = Date.now() - getLastInstallToastDate();
 
   return (
     !isRunningAsInstalledApp() &&
@@ -451,8 +451,7 @@ function setupInstallExperience() {
       try {
         await navigator.clipboard.writeText(portalUrl);
 
-        const instructions =
-          document.getElementById("install-instructions");
+        const instructions = document.getElementById("install-instructions");
 
         if (instructions) {
           const message =
@@ -462,7 +461,7 @@ function setupInstallExperience() {
 
           instructions.insertAdjacentHTML(
             "beforeend",
-            `<p class="copy-success">${message}</p>`
+            `<p class="copy-success">${message}</p>`,
           );
         }
       } catch {
@@ -470,7 +469,7 @@ function setupInstallExperience() {
           getActiveLanguage() === "ja"
             ? "このURLをコピーしてください："
             : "Copie este endereço:",
-          portalUrl
+          portalUrl,
         );
       }
     });
@@ -526,17 +525,17 @@ function setupBackToTop() {
 
   button.addEventListener("click", () => {
     const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     ).matches;
 
     window.scrollTo({
       top: 0,
-      behavior: reducedMotion ? "auto" : "smooth"
+      behavior: reducedMotion ? "auto" : "smooth",
     });
   });
 
   window.addEventListener("scroll", updateButtonVisibility, {
-    passive: true
+    passive: true,
   });
 
   document.body.appendChild(button);
@@ -544,9 +543,9 @@ function setupBackToTop() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    setupConnectionStatus();
-    setupInstallExperience();
-    setupBackToTop();
+  setupConnectionStatus();
+  setupInstallExperience();
+  setupBackToTop();
 
   const initialLanguage = detectLanguage();
 
@@ -565,23 +564,18 @@ function registerServiceWorker() {
   }
 
   const appScript = Array.from(document.scripts).find((script) =>
-    script.src.endsWith("/js/app.js")
+    script.src.endsWith("/js/app.js"),
   );
 
   if (!appScript) {
     return;
   }
 
-  const serviceWorkerUrl = new URL(
-    "../service-worker.js",
-    appScript.src
-  );
+  const serviceWorkerUrl = new URL("../service-worker.js", appScript.src);
 
-  navigator.serviceWorker
-    .register(serviceWorkerUrl.href)
-    .catch((error) => {
-      console.error("Falha ao registrar o service worker:", error);
-    });
+  navigator.serviceWorker.register(serviceWorkerUrl.href).catch((error) => {
+    console.error("Falha ao registrar o service worker:", error);
+  });
 }
 
 window.addEventListener("load", registerServiceWorker);
